@@ -1,0 +1,134 @@
+//Part 1 ::
+//Question 1: Create an Array from 0...100 without using traditional For-loop?
+
+let arr = [];
+function increment(n) {
+    arr.push(n);
+    if(arr.length == 101) return false;
+    else return increment(n+1);
+}
+
+increment(0);
+console.log(arr);
+
+
+//Question 2: Create an Array of only even numbers from the above array?
+
+let evenNoArray = [];
+for(let i = 0; i < arr.length; i++) {
+    if(arr[i] % 2 == 0) evenNoArray.push(arr[i]);
+}
+
+console.log(evenNoArray);
+
+function squarePromise(n) {
+    return new Promise((res, rej) => {
+       if(n%2==0){
+           res(n*n);
+       } else {
+           rej(new Error(`Number ${n} is not even.`));
+       }
+    })
+}
+
+squarePromise(6);
+
+// Question 3: create an array of even squares using the previous array
+
+let arrayOfevenSquare =evenNoArray.map(n => {
+    return n*n;
+});
+
+console.log(arrayOfevenSquare);
+
+// Question 4: Sum of all the squares from the above array of Even Squares
+
+let sum = 0;
+for(let i = 0; i < arrayOfevenSquare.length; i++) {
+    sum = sum + arrayOfevenSquare[i];
+}
+console.log(sum);
+
+// Question 5: Call the above square Promise function with all numbers from 0-100
+// and ensure that the errors are not thrown
+// then print the following:
+// 1. Number of errors 
+// 2. The resultant array
+// 3. Number of objects in the resultant array
+
+let resultantArray = [];
+let errorArray = [];
+for(let i = 0; i <= 100; i++) {
+    await squarePromise(i).then(result => {
+        resultantArray.push(result);
+
+    }).catch(error => {
+        errorArray.push(error);
+    });
+}
+
+console.log("resultantArray ::", resultantArray);
+console.log("errorArray ::", errorArray);
+
+
+//===============================================================================
+
+//Part 2 ::
+
+//Q1: Create a template string of a button HTML Element. Save the title
+// for the button in a separate var and use it in the button correctly.
+
+var buttonName = "Submit";
+let buttonTemplate = `<button type="button">${buttonName}</button>`;
+
+// Q2: Create a function that returns a list element (<li>) HTML 
+// use this function to create an ordered list HTML structure of numbers from 
+// 1-30 without breaking the template string invocation i.e. usage of += is disallowed.
+
+function element() {
+    let html = "<ol>";
+    for(let i = 1; i <= 30; i++) {
+        html = html.concat(`<li>${i}</li>`);
+    }
+    html = html.concat('</ol>');
+    return html;
+}
+
+let finalElement = element();
+console.log(finalElement);
+
+// Q3: Now only print the even numbers. Again, breaking the template string
+// invocation is disallowed
+
+function element() {
+    let html = "<ol>";
+    for(let i = 1; i <= 30; i+=2) {
+        html = html.concat(`<li>${i}</li>`);
+    }
+    html = html.concat('</ol>');
+    return html;
+}
+
+let finalElement = element();
+console.log(finalElement);
+
+// Q4: Create a promise that simulates a delay of 1-3s randomly. Create an array of 
+// 10 such promises. Only print the output when all promises have been resolved
+
+let promiseArr = [];
+for(let i = 0; i < 10; i++) {
+    promiseArr.push(new Promise((res, rej)=> {
+        let randomNumber = Math.floor(Math.random() * 3);
+        setTimeout(function() {
+            res(randomNumber);
+        }, randomNumber);
+    }))
+}
+
+Promise.all(promiseArr).then(result => {
+    console.log(result)
+}).catch(error=> {
+    console.log(error);
+});
+
+
